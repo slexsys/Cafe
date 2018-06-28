@@ -61,9 +61,14 @@ public class ManagerController {
     public String assign(Model model) {
         List<User> users = userRepository.findAllWaiters();
         model.addAttribute("users", users);
-
+        
+        List<Table> tables;
         List<Table> list = assignRepository.getAllTables();
-        List<Table> tables = tableRepository.findAllNotContain(list);
+        if (list.isEmpty()) {
+            tables = tableRepository.findAll();
+        } else {
+            tables = tableRepository.findAllNotContain(list);
+        }
         model.addAttribute("tables", tables);
 
         return "/manager/assign";
