@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <title>Create products</title>
+</head>
+<body>
+    <h1>Products</h1>
+    <table>
+        <thead>
+        <tr>
+            <th>ID</th>
+            <th>Name</th>
+            <th>Cost</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="item : ${list}">
+            <td th:text="${item.id}">&nbsp;</td>
+            <td th:text="${item.name}">&nbsp;</td>
+            <td th:text="${item.cost}">&nbsp;</td>
+        </tr>
+        </tbody>
+    </table>
+    <br /><br /><br />
+    <div>
+        Name : <input type="text" id="inputName">
+        Cost : <input type="text" id="inputCost">
+        <input type="button" value="add" id="btnAdd">
+    </div>
+    <script>
+        $(document).ready(function() {
+            $("#btnAdd").click(function() {
+                var name = $("#inputName").val();
+                var cost = $("#inputCost").val();
+                if (name !== '') {
+                    if (cost !== '') {
+                        if (!isNaN(parseFloat(cost)) && parseFloat(cost) > 0) {
+                            send(name, cost);
+                        } else {
+                            alert("Please correct coast.");
+                        }
+                    } else {
+                        alert("Please type coast.");
+                    }
+                } else {
+                    alert("Please type name.");
+                }
+            });
+        });
+        function send(name, cost) {
+            $.get(
+                "../api/product/add",
+                {name : name, cost : cost},
+                function(data) {
+                    location.reload();
+                }
+            );
+        }
+    </script>
+</body>
+</html>

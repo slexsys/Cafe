@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <title>Edit orders</title>
+</head>
+<body>
+    <h1>Edit orders</h1>
+    <div>
+        <select id="tables">
+            <option value="">Select table</option>
+            <option th:each="item : ${tables}"
+                    th:value="${item.id}"
+                    th:text="${item.name}"></option>
+        </select>
+        <select id="status">
+            <option value=""></option>
+            <option th:each="item : ${statuses}"
+                    th:value="${item}"
+                    th:text="${item}"></option>
+        </select>
+        <input type="button" value="add" id="btnAdd">
+    </div>
+    <script>
+        $(document).ready(function() {
+            $("#btnAdd").click(function() {
+                var table = $( "#tables option:selected" ).val();
+                var status = $( "#status option:selected" ).val();
+                if (table !== '') {
+                    if (status !== '') {
+                        send(table, status);
+                    } else {
+                        alert("Please chose status");
+                    }
+                } else {
+                    alert("Please chose table");
+                }
+            });
+        });
+        function send(table, status) {
+            $.get(
+                "../../api/order/edit",
+                {tableid : table, status : status},
+                function(data) {
+                    location.reload();
+                }
+            );
+        }
+    </script>
+</body>
+</html>

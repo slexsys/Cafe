@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>Chose Table</title>
+</head>
+<body>
+<table>
+    <thead>
+    <tr>
+        <th>ID</th>
+        <th>Name</th>
+        <th>Create</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="item : ${list}">
+        <td th:text="${item.id}">&nbsp;</td>
+        <td th:text="${item.name}">&nbsp;</td>
+        <td><a th:href="${'/waiter/create/productInOrder?tableid='.concat(item.id)}"><center> ... </center></a></td>
+    </tr>
+    </tbody>
+</table>
+</body>
+</html>

@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>Menu</title>
+</head>
+<body>
+    <a href="/waiter/tables">Tables</a><br />
+    <a href="/waiter/create/orders">Create orders</a><br />
+    <a href="/waiter/productInOrder">Product in order</a><br />
+    <!--a href="/waiter/create/productInOrder">Create product in order</a><br /-->
+    <!--a href="/waiter/edit/productInOrder">Edit product in order</a><br /-->
+    <a href="/waiter/edit/orders">Edit order</a><br /><br />
+
+    <form th:action="@{/logout}" method="post">
+        <input type="submit" value="Sign Out"/>
+    </form>
+</body>
+</html>

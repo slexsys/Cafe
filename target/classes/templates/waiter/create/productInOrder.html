@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <title>Products in order</title>
+</head>
+<body>
+    <h1>Product in order</h1>
+    <h1 id="total">Total : </h1>
+    <table id="table" th:tableid="${tableid}" th:total="${total}">
+        <thead>
+        <tr>
+            <th>ID</th>
+            <th>Name</th>
+            <th>Qtty</th>
+            <th>Price</th>
+            <th>Amount</th>
+            <th>Edit</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="item : ${list}">
+            <td id="table_pid" th:text="${item.product.id}">&nbsp;</td>
+            <td th:text="${item.product.name}">&nbsp;</td>
+            <td id="table_qtty" th:text="${item.qtty}">&nbsp;</td>
+            <td th:text="${item.product.cost}">&nbsp;</td>
+            <td th:text="${item.amount}">&nbsp;</td>
+            <td th:id="${item.id}" th:status="${item.status}"><a href="#"><center> ... </center></a></td>
+        </tr>
+        </tbody>
+    </table>
+    <br /> <br />
+    <div id="addproduct">
+        <select id="products">
+            <option value="">Select product</option>
+            <option th:each="item : ${products}"
+                    th:value="${item.id}"
+                    th:text="${item.name}"></option>
+        </select>
+        <input type="number" id="qtty" placeholder="quantity">
+        <input type="button" value="add" id="btnAdd">
+    </div>
+    <div id="editproduct">
+        <select id="products_edit">
+            <option th:each="item : ${products}"
+                    th:value="${item.id}"
+                    th:text="${item.name}"></option>
+        </select>
+        <input type="number" id="qtty_edit" placeholder="quantity">
+        <select id="status_edit">
+            <option th:each="item : ${statuses}"
+                    th:value="${item}"
+                    th:text="${item}"></option>
+        </select>
+        <input type="button" value="update" id="btnUpdate">
+        <input type="button" value="X" id="btnHide">
+    </div>
+    <br /><br /><input type="button" value="Cancel" id="btnCancel">
+    <br /><br /><input type="button" value="Close" id="btnClose">
+    <script>
+        $(document).ready(function() {
+            $('#editproduct').hide();
+            var total = $("#table").attr('total');
+            $('#total').append(total);
+            $("#btnAdd").click(function() {
+                var table = $("#table").attr('tableid');
+                var product = $("#products option:selected").val();
+                var qtty = $('#qtty').val();
+                if (product !== '') {
+                    if (qtty !== '') {
+                        if (!isNaN(parseFloat(qtty)) && parseFloat(qtty) > 0) {
+                            send(table, product, qtty);
+                        }
+                    } else {
+                        alert("Please type quantity");
+                    }
+                } else {
+                    alert("Please chose product");
+                }
+            });
+        });
+        function send(table, product, qtty) {
+            $.get(
+                "../../api/productinorder/add",
+                {tableid: table, productid : product, qtty : qtty},
+                function(data) {
+                    location.reload();
+                }
+            );
+        }
+/////////////////////////////////////////////////
+        var lastEditItemId;
+        $("a").click(function() {
+            $('#editproduct').show();
+            lastEditItemId = $(this).parent().attr('id');
+            var status = $(this).parent().attr('status');
+            var pid = $(this).parent().parent().find('#table_pid').text();
+            var qtty = $(this).parent().parent().find('#table_qtty').text();
+
+            $('#products_edit').val(pid);
+            $('#qtty_edit').val(qtty);
+            $('#status_edit').val(status);
+        });
+
+        $("#btnUpdate").click(function() {
+            var pid = $('#products_edit').val();
+            var qtty = $('#qtty_edit').val();
+            var status = $('#status_edit').val();
+            $.get(
+                "../../api/productinorder/edit",
+                {id : lastEditItemId, productid : pid, qtty : qtty, status : status},
+                function(data) {
+                    location.reload();
+                }
+            );
+            $('#editproduct').hide();
+        });
+
+        $("#btnHide").click(function() {
+            $('#editproduct').hide();
+        });
+
+        $("#btnCancel").click(function() {
+            sendCC("../../api/productinorder/cancel");
+        });
+
+        $("#btnClose").click(function() {
+            sendCC("../../api/productinorder/close");
+        });
+        function sendCC(url) {
+            var table = $("#table").attr('tableid');
+            $.get(
+                url,
+                {tableid: table},
+                function(data) {
+                    window.location.href = "../../";
+                }
+            );
+        }
+
+    </script>
+</body>
+</html>

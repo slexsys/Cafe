@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <title>Assign tables to waiters</title>
+</head>
+<body>
+    <h1>Assign tables to waiters</h1>
+    <div>
+        <select id="tables">
+            <option value="">Select table</option>
+            <option th:each="table : ${tables}"
+                    th:value="${table.id}"
+                    th:text="${table.name}"></option>
+        </select>
+        <select id="users">
+            <option value="">Select waiter</option>
+            <option th:each="user : ${users}"
+                    th:value="${user.id}"
+                    th:text="${user.name}"></option>
+        </select>
+        <input type="button" value="add" id="btnAdd">
+    </div>
+    <script>
+        $(document).ready(function() {
+            $("#btnAdd").click(function() {
+                var user = $( "#users option:selected" ).val();
+                var table = $( "#tables option:selected" ).val();
+                if (table !== '') {
+                    if (user !== '') {
+                        send(user, table);
+                    } else {
+                        alert("Please chose waiter");
+                    }
+                } else {
+                    alert("Please chose table");
+                }
+            });
+        });
+        function send(user, table) {
+            $.get(
+                "../api/assign/add",
+                {userId : user, tableId : table},
+                function(data) {
+                    location.reload();
+                }
+            );
+        }
+    </script>
+</body>
+</html>

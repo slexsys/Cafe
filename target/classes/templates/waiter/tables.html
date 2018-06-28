@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>Tables</title>
+</head>
+<body>
+    <h1>Tables</h1>
+    <table>
+        <thead>
+        <tr>
+            <th>ID</th>
+            <th>Name</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="item : ${list}">
+            <td th:text="${item.id}">&nbsp;</td>
+            <td th:text="${item.name}">&nbsp;</td>
+        </tr>
+        </tbody>
+    </table>
+</body>
+</html>

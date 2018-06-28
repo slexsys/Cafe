@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <title>Create users</title>
+</head>
+<body>
+    <h1>Users</h1>
+    <table>
+        <thead>
+        <tr>
+            <th>ID</th>
+            <th>Name</th>
+            <th>Type</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="item : ${list}">
+            <td th:text="${item.id}">&nbsp;</td>
+            <td th:text="${item.name}">&nbsp;</td>
+            <td th:text="${item.type}">&nbsp;</td>
+        </tr>
+        </tbody>
+    </table>
+    <br /><br /><br />
+    <div>
+        Name : <input type="text" id="inputName">
+        Password : <input type="password" id="inputPasword">
+        Type : <select id="selectType">
+            <option>Manager</option>
+            <option>Waiter</option>
+        </select>
+        <input type="button" value="add" id="btnAdd">
+    </div>
+    <script>
+        $(document).ready(function() {
+            $("#btnAdd").click(function() {
+                var name = $("#inputName").val();
+                var pass = $("#inputPasword").val();
+                var type = $( "#selectType option:selected" ).text();
+                if (name !== '') {
+                    if (pass !== '') {
+                        send(name, pass, type);
+                    } else {
+                        alert("Please type password.");
+                    }
+                } else {
+                    alert("Please type name.");
+                }
+            });
+        });
+        function send(name, pass, type) {
+            $.get(
+                "../api/user/add",
+                {name : name, password : pass, type : type},
+                function(data) {
+                    location.reload();
+                }
+            );
+        }
+    </script>
+</body>
+</html>

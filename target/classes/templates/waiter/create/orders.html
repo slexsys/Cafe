@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <title>Create Orders</title>
+</head>
+<body>
+    <h1>Create Orders</h1>
+    <div>
+        <select id="tables">
+            <option value="">Select table</option>
+            <option th:each="item : ${list}"
+                    th:value="${item.id}"
+                    th:text="${item.name}"></option>
+        </select>
+        <input type="button" value="add" id="btnAdd">
+    </div>
+    <script>
+        $(document).ready(function() {
+            $("#btnAdd").click(function() {
+                var table = $( "#tables option:selected" ).val();
+                if (table !== '') {
+                    send(table);
+                } else {
+                    alert("Please chose table");
+                }
+            });
+        });
+        function send(table) {
+            $.get(
+                "../../api/order/add",
+                {tableid : table},
+                function(data) {
+                    location.reload();
+                }
+            );
+        }
+    </script>
+</body>
+</html>

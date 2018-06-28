@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>Menu</title>
+</head>
+<body>
+    <a href="/manager/users">Users</a><br />
+    <a href="/manager/tables">Tables</a><br />
+    <a href="/manager/products">Products</a><br />
+    <a href="/manager/assign">Assign</a><br />
+    <br /><br />
+    <form th:action="@{/logout}" method="post">
+        <input type="submit" value="Sign Out"/>
+    </form>
+</body>
+</html>
