@@ -44,7 +44,7 @@ public class CafeManagerApplication {
     public CommandLineRunner commandLineRunner(ApplicationContext context) {
         return args -> {
             addAdmin();
-            test();
+            //test();
         };
     }
 
